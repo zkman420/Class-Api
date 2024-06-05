@@ -396,7 +396,7 @@ cron.schedule("14 14 * * *", async () => {
 
 // test schedules
 
-cron.schedule("9 23 * * *", async () => {
+cron.schedule("11 23 * * *", async () => {
   console.log("Schedule");
   try {
     let period = "Period 1";
