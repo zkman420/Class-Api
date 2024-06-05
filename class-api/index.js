@@ -35,19 +35,19 @@ async function fetchClassInfo(period) {
   const cookies = [
     {
       name: "SESSIONID",
-      value: "C27055CF%2DB252%2D5277%2DE714DD72901A3DFE",
+      value: "FC458205%2DFEDD%2D30D7%2D90A276511A417B5F",
     },
     {
       name: "SESSIONTOKEN",
-      value: "C27055CE%2DFE2F%2DCB13%2D8A07FDA8AE5B85ED",
+      value: "FC458204%2DAD51%2DDDF8%2D8E9C493201B6C437",
     },
     {
       name: "CFID",
-      value: "5065946",
+      value: "5080134",
     },
     {
       name: "CFTOKEN",
-      value: "95cd02481515a22e-C26FC4D9-E905-B53B-3A05A62C31CA15A4",
+      value: "4740c4c68913e9dc-FC4495A9-0326-4FD6-EF2AA063DCBC0CDB",
     },
   ];
 
@@ -91,7 +91,7 @@ async function fetchClassInfo(period) {
       const message = {
         token: pushoverToken,
         user: userKey,
-        message: `Hello! Your next class is ${classes[0].class} at ${classes[0].location}`,
+        message: `Hello! Your next class is ${classes[0].class} at ${classes[0].location} with ${classes[0].teacher}`,
       };
 
       await axios.post("https://api.pushover.net/1/messages.json", message);
@@ -106,8 +106,8 @@ async function fetchClassInfo(period) {
   }
 }
 
-// Endpoint to trigger the API call manually
-app.post("/test/:period", async (req, res) => {
+// Endpoint to post
+app.post("/send/:period", async (req, res) => {
   try {
     let period = req.params;
     console.log(period);
@@ -117,6 +117,83 @@ app.post("/test/:period", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+app.post('/addUser', async (req, res) => {
+  const { username, userKey } = req.body;
+
+  if (!username || !userKey) {
+    return res.status(400).json({ error: "Username, userKey are required." });
+  }
+
+  try {
+    const sql = "INSERT INTO Users (username, userKey) VALUES (?, ?)";
+    const values = [username, userKey];
+
+    pool.query(sql, values, (err, result) => {
+      if (err) {
+        console.error("Error inserting user: " + err);
+        return res.status(500).json({ error: "An error occurred while adding the user." });
+      }
+      console.log("User added successfully.");
+      res.status(200).json({ message: "User added successfully." });
+    });
+  } catch (err) {
+    console.error("Error hashing password:", err);
+    res.status(500).json({ error: "An error occurred while hashing the password" });
+  }
+});
+
+app.post('/addcookies', async (req, res) => {
+  const { UserID, CFID, CFTOKEN, SESSIONID, SESSIONTOKEN } = req.body;
+
+  if (!UserID || !CFID || !CFTOKEN || !SESSIONID || !SESSIONTOKEN) {
+    return res.status(400).json({ error: "UserID, CFID, CFTOKEN, SESSIONID, SESSIONTOKEN are required." });
+  }
+
+  try {
+    const sql = "INSERT INTO `Cookies` (`UserID`, `CFID`, `CFTOKEN`, `SESSIONID`, `SESSIONTOKEN`) VALUES (?, ?, ?, ?, ?)";
+    const values = [UserID, CFID, CFTOKEN, SESSIONID, SESSIONTOKEN];
+
+    pool.query(sql, values, (err, result) => {
+      if (err) {
+        console.error("Error inserting user: " + err);
+        return res.status(500).json({ error: "An error occurred while adding the cookies." });
+      }
+      console.log("User added successfully.");
+      res.status(200).json({ message: "cookies added successfully." });
+    });
+  } catch (err) {
+    console.error("Error hashing password:", err);
+    res.status(500).json({ error: "An error occurred " });
+  }
+});
+
+// get 
+
+app.get('/getCookies', async (req, res) => {
+  const sql = "SELECT * FROM Cookies";
+  pool.query(sql, (err, result) => {
+    if (err) {
+      console.error("Error fetching cookies: " + err);
+      return res.status(500).json({ error: "An error occurred while fetching the cookies." });
+    }
+    console.log("Cookies fetched successfully.");
+    res.status(200).json(result);
+  });
+});
+app.get('/getUsers', async (req, res) => {
+  const sql = "SELECT * FROM Users";
+  pool.query(sql, (err, result) => {
+    if (err) {
+      console.error("Error fetching users: " + err);
+      return res.status(500).json({ error: "An error occurred while fetching the users." });
+    }
+    console.log("Users fetched successfully.");
+    res.status(200).json(result);
+  });
+})
+
+
 
 // Schedule the task to run at a specific time
 cron.schedule("55 8 * * *", async () => {
@@ -170,7 +247,20 @@ cron.schedule("50 11 * * *", async () => {
   }
 });
 
-cron.schedule("30 13 * * *", async () => {
+cron.schedule("25 13 * * *", async () => {
+  console.log("Schedule");
+  try {
+    let period = "Period 5";
+    console.log("let" + period);
+    const classes = await fetchClassInfo(period);
+    console.log(classes);
+    // Here you can do something with the `classes` array, such as saving to a database or sending an email
+  } catch (error) {
+    console.error("Scheduled task failed:", error);
+  }
+});
+
+cron.schedule("20 14 * * *", async () => {
   console.log("Schedule");
   try {
     let period = "Period 5";
