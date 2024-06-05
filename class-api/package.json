@@ -11,5 +11,15 @@
     "nodemailer": "^6.9.13",
     "pm2": "^5.4.0",
     "sql": "^0.78.0"
-  }
+  },
+  "name": "class-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
