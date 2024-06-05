@@ -1,5 +1,20 @@
-{ 
-    "version": 2, 
+{
+    "version": 2,
     "builds": [{ "src": "./index.js", "use": "@vercel/node" }],
-    "routes": [{ "src": "/(.*)", "dest": "/" }] 
+    "routes": [{ "src": "/(.*)", "dest": "/" }],
+    "crons": [
+        {
+            "path": "/crons.js",
+            "schedule": "* * * * *"
+        },
+        {
+            "path": "/crons.js",
+            "schedule": "0 * * * *"
+        },
+        {
+            "path": "/crons.js",
+            "schedule": "0 0 * * *"
+        }
+    ]
 }
+
