@@ -1,20 +1,20 @@
 {
     "version": 2,
     "builds": [{ "src": "./index.js", "use": "@vercel/node" }],
-    "routes": [{ "src": "/(.*)", "dest": "/" }],
+    "routes": [{ "src": "/crons/(.*)", "dest": "/index.js?path=$1" }],
     "crons": [
-        {
-            "path": "/crons.js",
-            "schedule": "* * * * *"
-        },
-        {
-            "path": "/crons.js",
-            "schedule": "0 * * * *"
-        },
-        {
-            "path": "/crons.js",
-            "schedule": "0 0 * * *"
-        }
+      {
+        "path": "/crons/every-minute",
+        "schedule": "* * * * *"
+      },
+      {
+        "path": "/crons/every-hour",
+        "schedule": "0 * * * *"
+      },
+      {
+        "path": "/crons/every-day",
+        "schedule": "0 0 * * *"
+      }
     ]
-}
-
+  }
+  

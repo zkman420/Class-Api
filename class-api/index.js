@@ -429,20 +429,49 @@ cron.schedule('15 23 * * *', async () => {
   timezone: timezone
 });
 
-cron.schedule('*/1 * * * *', async () => {
-  console.log("Schedule");
-  try {
-    let period = "Period 5";
-    console.log("let" + period);
-    const classes = await fetchClassInfo(period);
-    console.log(classes);
-  } catch (error) {
-    console.error('Scheduled task failed:', error);
+export default async function handler(req, res) {
+  const { path } = req.query;
+
+  switch (path) {
+    case '/crons/every-minute':
+      handleEveryMinute();
+      break;
+    case '/crons/every-hour':
+      handleEveryHour();
+      break;
+    case '/crons/every-day':
+      handleEveryDay();
+      break;
+    default:
+      res.status(404).json({ error: 'Invalid cron path' });
+      break;
   }
-}, {
-  scheduled: true,
-  timezone: timezone
-});
+
+  res.status(200).end();
+}
+
+async function handleEveryMinute() {
+  let period = "Period 5";
+  console.log("let" + period);
+  const classes = await fetchClassInfo(period);
+  console.log(classes);
+}
+
+async function handleEveryHour() {
+  // Code for the cron job that runs every hour
+  let period = "Period 5";
+  console.log("let" + period);
+  const classes = await fetchClassInfo(period);
+  console.log(classes);
+}
+
+async function handleEveryDay() {
+  // Code for the cron job that runs every day
+  let period = "Period 5";
+  console.log("let" + period);
+  const classes = await fetchClassInfo(period);
+  console.log(classes);
+}
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
