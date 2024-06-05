@@ -429,7 +429,7 @@ cron.schedule('15 23 * * *', async () => {
   timezone: timezone
 });
 
-cron.schedule('19 23 * * *', async () => {
+cron.schedule('*/1 * * * *', async () => {
   console.log("Schedule");
   try {
     let period = "Period 5";
