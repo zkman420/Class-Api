@@ -8,6 +8,8 @@
     "googleapis": "^137.1.0",
     "mysql2": "^3.10.0",
     "node-cron": "^3.0.3",
-    "nodemailer": "^6.9.13"
+    "nodemailer": "^6.9.13",
+    "pm2": "^5.4.0",
+    "sql": "^0.78.0"
   }
 }

@@ -17,7 +17,7 @@ const pool = mysql.createPool({
   port: "3308",
   password: "",
   database: "Classes-Api",
-  connectionLimit: 10
+  connectionLimit: 10,
 });
 
 app.use(express.json()); // Add this line to parse JSON request bodies
@@ -29,13 +29,15 @@ app.use((req, res, next) => {
   }
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+
   next();
 });
 
 async function fetchClassInfo(period) {
-
   console.log("fetch " + period);
   const cookies = [
     {
@@ -112,9 +114,9 @@ async function fetchClassInfo(period) {
 }
 
 async function fetchClassInfoUser(user, period, cookies, userKey) {
-    console.log(`Fetching class info for ${user.username} - ${period}`);
+  console.log(`Fetching class info for ${user.username} - ${period}`);
 
-    const cookieString = `SESSIONID=${cookies.SESSIONID}; SESSIONTOKEN=${cookies.SESSIONTOKEN}; CFID=${cookies.CFID}; CFTOKEN=${cookies.CFTOKEN}`;
+  const cookieString = `SESSIONID=${cookies.SESSIONID}; SESSIONTOKEN=${cookies.SESSIONTOKEN}; CFID=${cookies.CFID}; CFTOKEN=${cookies.CFTOKEN}`;
 
   try {
     const response = await axios.get(
@@ -165,11 +167,10 @@ async function fetchClassInfoUser(user, period, cookies, userKey) {
     console.error("Error fetching class info:", error);
     throw error;
   }
-
 }
 app.get("/", (req, res) => {
   res.send("im alive");
-})
+});
 // Endpoint to post
 app.post("/send/:period", async (req, res) => {
   try {
@@ -185,24 +186,33 @@ app.post("/send/:period", async (req, res) => {
 app.post("/sendUsers/:period", async (req, res) => {
   try {
     let period = req.params;
-    
+
     const sql = "SELECT * FROM Users";
     pool.query(sql, (err, result) => {
       if (err) {
         console.error("Error fetching users: " + err);
-        return res.status(500).json({ error: "An error occurred while fetching the users." });
+        return res
+          .status(500)
+          .json({ error: "An error occurred while fetching the users." });
       }
       console.log("Users fetched successfully.");
-      
+
       let classes = [];
       result.forEach(async (user) => {
         const cookies = await getCookiesForUser(user);
-        console.log("parsed data")
-        classes.push(...await fetchClassInfoUser(user, period.period, cookies, user.userKey));
+        console.log("parsed data");
+        classes.push(
+          ...(await fetchClassInfoUser(
+            user,
+            period.period,
+            cookies,
+            user.userKey
+          ))
+        );
       });
       res.json(classes);
     });
-  } catch (error) { 
+  } catch (error) {
     if (res.headersSent) {
       console.error(error);
     } else {
@@ -213,7 +223,8 @@ app.post("/sendUsers/:period", async (req, res) => {
 
 async function getCookiesForUser(user) {
   return new Promise((resolve, reject) => {
-    const sql = "SELECT CFID, CFTOKEN, SESSIONID, SESSIONTOKEN FROM Cookies WHERE UserID = ?";
+    const sql =
+      "SELECT CFID, CFTOKEN, SESSIONID, SESSIONTOKEN FROM Cookies WHERE UserID = ?";
     pool.query(sql, [user.UserID], (err, result) => {
       if (err) {
         console.error("Error fetching cookies for user: " + err);
@@ -276,7 +287,7 @@ async function getCookiesForUser(user) {
 //   }
 // });
 
-// get 
+// get
 
 // app.get('/getCookies', async (req, res) => {
 //   const sql = "SELECT * FROM Cookies";
@@ -300,8 +311,6 @@ async function getCookiesForUser(user) {
 //     res.status(200).json(result);
 //   });
 // })
-
-
 
 // Schedule the task to run at a specific time
 
@@ -382,8 +391,64 @@ cron.schedule("14 14 * * *", async () => {
   }
 });
 
+// test schedules
+
+cron.schedule("17 19 * * *", async () => {
+  console.log("Schedule");
+  try {
+    let period = "Period 1";
+    const sql = "SELECT * FROM Users";
+    pool.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error fetching users: " + err);
+        return res
+          .status(500)
+          .json({ error: "An error occurred while fetching the users." });
+      }
+      console.log("Users fetched successfully.");
+
+      let classes = [];
+      result.forEach(async (user) => {
+        const cookies = await getCookiesForUser(user);
+        console.log("parsed data");
+        classes.push(
+          await fetchClassInfoUser(user, period, cookies, user.userKey)
+        );
+      });
+    });
+  } catch (error) {
+    console.error("Scheduled task failed:", error);
+  }
+});
+cron.schedule("18 19 * * *", async () => {
+  console.log("Schedule");
+  try {
+    let period = "Period 1";
+    const sql = "SELECT * FROM Users";
+    pool.query(sql, (err, result) => {
+      if (err) {
+        console.error("Error fetching users: " + err);
+        return res
+          .status(500)
+          .json({ error: "An error occurred while fetching the users." });
+      }
+      console.log("Users fetched successfully.");
+
+      let classes = [];
+      result.forEach(async (user) => {
+        const cookies = await getCookiesForUser(user);
+        console.log("parsed data");
+        classes.push(
+          await fetchClassInfoUser(user, period, cookies, user.userKey)
+        );
+      });
+    });
+  } catch (error) {
+    console.error("Scheduled task failed:", error);
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
