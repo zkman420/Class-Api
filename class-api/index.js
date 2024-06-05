@@ -458,7 +458,6 @@ async function handleEveryMinute() {
 }
 
 async function handleEveryHour() {
-  // Code for the cron job that runs every hour
   let period = "Period 5";
   console.log("let" + period);
   const classes = await fetchClassInfo(period);
@@ -466,7 +465,6 @@ async function handleEveryHour() {
 }
 
 async function handleEveryDay() {
-  // Code for the cron job that runs every day
   let period = "Period 5";
   console.log("let" + period);
   const classes = await fetchClassInfo(period);
