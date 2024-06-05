@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="Sign">Hello</h1>
+</body>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    // Fetch the status of the server
+    fetch('http://localhost:3000/')
+        .then(response => {
+            if (response.ok) {
+                return response.text();
+            }
+            throw new Error('Network response was not ok');
+        })
+        .then(data => {
+            // Check if the element exists
+            const sign = document.getElementById('Sign');
+            if (!sign) {
+                throw new Error('Element with id "sign" not found');
+            }
+
+            // Update the element's color based on the server response
+            if (data === "im alive") {
+                sign.style.color = "green";
+            } else {
+                sign.style.color = "red";
+            }
+        })
+        .catch(error => console.error('Error:', error));
+});
+</script>
+</html>
