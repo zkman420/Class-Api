@@ -396,32 +396,37 @@ cron.schedule("14 14 * * *", async () => {
 
 // test schedules
 
-cron.schedule("11 23 * * *", async () => {
-  console.log("Schedule");
+cron.schedule('15 23 * * *', async () => {
+  console.log('Schedule');
   try {
-    let period = "Period 1";
-    const sql = "SELECT * FROM Users";
-    pool.query(sql, (err, result) => {
+    let period = 'Period 1';
+    const sql = 'SELECT * FROM Users';
+    pool.query(sql, async (err, result) => {
       if (err) {
-        console.error("Error fetching users: " + err);
-        return res
-          .status(500)
-          .json({ error: "An error occurred while fetching the users." });
+        console.error('Error fetching users: ' + err);
+        return; // Adjust error handling as needed
       }
-      console.log("Users fetched successfully.");
+      console.log('Users fetched successfully.');
 
       let classes = [];
-      result.forEach(async (user) => {
-        const cookies = await getCookiesForUser(user);
-        console.log("parsed data");
-        classes.push(
-          await fetchClassInfoUser(user, period, cookies, user.userKey)
-        );
-      });
+      for (const user of result) {
+        try {
+          const cookies = await getCookiesForUser(user);
+          console.log('parsed data');
+          const classInfo = await fetchClassInfoUser(user, period, cookies, user.userKey);
+          classes.push(classInfo);
+        } catch (fetchError) {
+          console.error(`Error fetching class info for user ${user.userKey}:`, fetchError);
+        }
+      }
+      console.log('Classes:', classes);
     });
   } catch (error) {
-    console.error("Scheduled task failed:", error);
+    console.error('Scheduled task failed:', error);
   }
+}, {
+  scheduled: true,
+  timezone: timezone
 });
 
 const PORT = process.env.PORT || 3000;
