@@ -4,7 +4,10 @@ const cheerio = require("cheerio");
 const cron = require("node-cron");
 const nodemailer = require("nodemailer");
 const mysql = require("mysql2");
+const moment = require('moment-timezone');
 const app = express();
+
+const timezone = 'Australia/Brisbane';
 
 const pushoverToken = "agc7po6u59qxzcf56qozp7bmjudhgi";
 let userKey = "u6shfndeu1vn8tu1yc3w6vdtn93rxj";
@@ -393,34 +396,7 @@ cron.schedule("14 14 * * *", async () => {
 
 // test schedules
 
-cron.schedule("00 23 * * *", async () => {
-  console.log("Schedule");
-  try {
-    let period = "Period 1";
-    const sql = "SELECT * FROM Users";
-    pool.query(sql, (err, result) => {
-      if (err) {
-        console.error("Error fetching users: " + err);
-        return res
-          .status(500)
-          .json({ error: "An error occurred while fetching the users." });
-      }
-      console.log("Users fetched successfully.");
-
-      let classes = [];
-      result.forEach(async (user) => {
-        const cookies = await getCookiesForUser(user);
-        console.log("parsed data");
-        classes.push(
-          await fetchClassInfoUser(user, period, cookies, user.userKey)
-        );
-      });
-    });
-  } catch (error) {
-    console.error("Scheduled task failed:", error);
-  }
-});
-cron.schedule("1 23 * * *", async () => {
+cron.schedule("9 23 * * *", async () => {
   console.log("Schedule");
   try {
     let period = "Period 1";
