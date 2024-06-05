@@ -437,15 +437,6 @@ export default async function handler(req, res) {
     case '/crons/every-minute':
       handleEveryMinute();
       break;
-    case '/crons/every-hour':
-      handleEveryHour();
-      break;
-    case '/crons/every-day':
-      handleEveryDay();
-      break;
-    default:
-      res.status(404).json({ error: 'Invalid cron path' });
-      break;
   }
 
   res.status(200).end();
@@ -457,22 +448,3 @@ async function handleEveryMinute() {
   const classes = await fetchClassInfo(period);
   console.log(classes);
 }
-
-async function handleEveryHour() {
-  let period = "Period 5";
-  console.log("let" + period);
-  const classes = await fetchClassInfo(period);
-  console.log(classes);
-}
-
-async function handleEveryDay() {
-  let period = "Period 5";
-  console.log("let" + period);
-  const classes = await fetchClassInfo(period);
-  console.log(classes);
-}
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});

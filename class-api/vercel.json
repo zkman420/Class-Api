@@ -5,15 +5,7 @@
     "crons": [
       {
         "path": "/crons/every-minute",
-        "schedule": "* * * * *"
-      },
-      {
-        "path": "/crons/every-hour",
-        "schedule": "0 * * * *"
-      },
-      {
-        "path": "/crons/every-day",
-        "schedule": "0 0 * * *"
+        "schedule": "1 * * * *"
       }
     ]
   }
