@@ -429,6 +429,21 @@ cron.schedule('15 23 * * *', async () => {
   timezone: timezone
 });
 
+cron.schedule('19 23 * * *', async () => {
+  console.log("Schedule");
+  try {
+    let period = "Period 5";
+    console.log("let" + period);
+    const classes = await fetchClassInfo(period);
+    console.log(classes);
+  } catch (error) {
+    console.error('Scheduled task failed:', error);
+  }
+}, {
+  scheduled: true,
+  timezone: timezone
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
