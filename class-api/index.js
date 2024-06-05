@@ -6,6 +6,7 @@ const nodemailer = require("nodemailer");
 const mysql = require("mysql2");
 const app = express();
 
+
 const pushoverToken = "agc7po6u59qxzcf56qozp7bmjudhgi";
 let userKey = "u6shfndeu1vn8tu1yc3w6vdtn93rxj";
 
@@ -314,53 +315,146 @@ async function getCookiesForUser(user) {
 
 // Schedule the task to run at a specific time
 
-// cron.schedule("54 8 * * *", async () => {
-//   console.log("Schedule");
-//   try {
-//     let period = "Period 1";
-//     console.log("let" + period);
-//     const classes = await fetchClassInfo(period);
-//     console.log(classes);
-//     // Here you can do something with the `classes` array, such as saving to a database or sending an email
-//   } catch (error) {
-//     console.error("Scheduled task failed:", error);
-//   }
-// });
+cron.schedule("54 8 * * *", async () => {
+  console.log("Schedule");
+  try {
+    let period = "Period 1";
+    console.log("let" + period);
+    const classes = await fetchClassInfo(period);
+    console.log(classes);
+    // Here you can do something with the `classes` array, such as saving to a database or sending an email
+  } catch (error) {
+    console.error("Scheduled task failed:", error);
+  }
+});
 
-// // test schedules
+cron.schedule("44 9 * * *", async () => {
+  console.log("Schedule");
+  try {
+    let period = "Period 2";
+    console.log("let" + period);
+    const classes = await fetchClassInfo(period);
+    console.log(classes);
+    // Here you can do something with the `classes` array, such as saving to a database or sending an email
+  } catch (error) {
+    console.error("Scheduled task failed:", error);
+  }
+});
 
-// cron.schedule('15 23 * * *', async () => {
-//   console.log('Schedule');
-//   try {
-//     let period = 'Period 1';
-//     const sql = 'SELECT * FROM Users';
-//     pool.query(sql, async (err, result) => {
-//       if (err) {
-//         console.error('Error fetching users: ' + err);
-//         return; // Adjust error handling as needed
-//       }
-//       console.log('Users fetched successfully.');
+cron.schedule("54 10 * * *", async () => {
+  console.log("Schedule");
+  try {
+    let period = "Period 3";
+    console.log("let" + period);
+    const classes = await fetchClassInfo(period);
+    console.log(classes);
+    // Here you can do something with the `classes` array, such as saving to a database or sending an email
+  } catch (error) {
+    console.error("Scheduled task failed:", error);
+  }
+});
+cron.schedule("45 11 * * *", async () => {
+  console.log("Schedule");
+  try {
+    let period = "Period 4";
+    console.log("let" + period);
+    const classes = await fetchClassInfo(period);
+    console.log(classes);
+    // Here you can do something with the `classes` array, such as saving to a database or sending an email
+  } catch (error) {
+    console.error("Scheduled task failed:", error);
+  }
+});
 
-//       let classes = [];
-//       for (const user of result) {
-//         try {
-//           const cookies = await getCookiesForUser(user);
-//           console.log('parsed data');
-//           const classInfo = await fetchClassInfoUser(user, period, cookies, user.userKey);
-//           classes.push(classInfo);
-//         } catch (fetchError) {
-//           console.error(`Error fetching class info for user ${user.userKey}:`, fetchError);
-//         }
-//       }
-//       console.log('Classes:', classes);
-//     });
-//   } catch (error) {
-//     console.error('Scheduled task failed:', error);
-//   }
-// }, {
-//   scheduled: true,
-//   timezone: timezone
-// });
+cron.schedule("24 13 * * *", async () => {
+  console.log("Schedule");
+  try {
+    let period = "Period 5";
+    console.log("let" + period);
+    const classes = await fetchClassInfo(period);
+    console.log(classes);
+    // Here you can do something with the `classes` array, such as saving to a database or sending an email
+  } catch (error) {
+    console.error("Scheduled task failed:", error);
+  }
+});
+
+cron.schedule("14 14 * * *", async () => {
+  console.log("Schedule");
+  try {
+    let period = "Period 5";
+    console.log("let" + period);
+    const classes = await fetchClassInfo(period);
+    console.log(classes);
+    // Here you can do something with the `classes` array, such as saving to a database or sending an email
+  } catch (error) {
+    console.error("Scheduled task failed:", error);
+  }
+});
+
+// test schedules
+
+cron.schedule('26 9 * * *', async () => {
+  console.log('Schedule');
+  try {
+    let period = 'Period 1';
+    const sql = 'SELECT * FROM Users';
+    pool.query(sql, async (err, result) => {
+      if (err) {
+        console.error('Error fetching users: ' + err);
+        return; // Adjust error handling as needed
+      }
+      console.log('Users fetched successfully.');
+
+      let classes = [];
+      for (const user of result) {
+        try {
+          const cookies = await getCookiesForUser(user);
+          console.log('parsed data');
+          const classInfo = await fetchClassInfoUser(user, period, cookies, user.userKey);
+          classes.push(classInfo);
+        } catch (fetchError) {
+          console.error(`Error fetching class info for user ${user.userKey}:`, fetchError);
+        }
+      }
+      console.log('Classes:', classes);
+    });
+  } catch (error) {
+    console.error('Scheduled task failed:', error);
+  }
+});
+
+cron.schedule('26 9 * * *', async () => {
+  console.log('Schedule');
+  try {
+    let period = 'Period 1';
+    const sql = 'SELECT * FROM Users';
+    pool.query(sql, async (err, result) => {
+      if (err) {
+        console.error('Error fetching users: ' + err);
+        return; // Adjust error handling as needed
+      }
+      console.log('Users fetched successfully.');
+
+      let classes = [];
+      for (const user of result) {
+        try {
+          const cookies = await getCookiesForUser(user);
+          console.log('parsed data');
+          const classInfo = await fetchClassInfoUser(user, period, cookies, user.userKey);
+          classes.push(classInfo);
+        } catch (fetchError) {
+          console.error(`Error fetching class info for user ${user.userKey}:`, fetchError);
+        }
+      }
+      console.log('Classes:', classes);
+    });
+  } catch (error) {
+    console.error('Scheduled task failed:', error);
+  }
+});
+
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
