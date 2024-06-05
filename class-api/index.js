@@ -429,6 +429,7 @@ cron.schedule('15 23 * * *', async () => {
   timezone: timezone
 });
 
+// thing ye
 export default async function handler(req, res) {
   const { path } = req.query;
 
