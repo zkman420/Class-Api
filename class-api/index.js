@@ -4,10 +4,7 @@ const cheerio = require("cheerio");
 const cron = require("node-cron");
 const nodemailer = require("nodemailer");
 const mysql = require("mysql2");
-const moment = require('moment-timezone');
 const app = express();
-
-const timezone = 'Australia/Brisbane';
 
 const pushoverToken = "agc7po6u59qxzcf56qozp7bmjudhgi";
 let userKey = "u6shfndeu1vn8tu1yc3w6vdtn93rxj";
