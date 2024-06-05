@@ -393,7 +393,7 @@ cron.schedule("14 14 * * *", async () => {
 
 // test schedules
 
-cron.schedule("17 19 * * *", async () => {
+cron.schedule("00 23 * * *", async () => {
   console.log("Schedule");
   try {
     let period = "Period 1";
@@ -420,7 +420,7 @@ cron.schedule("17 19 * * *", async () => {
     console.error("Scheduled task failed:", error);
   }
 });
-cron.schedule("18 19 * * *", async () => {
+cron.schedule("1 23 * * *", async () => {
   console.log("Schedule");
   try {
     let period = "Period 1";
